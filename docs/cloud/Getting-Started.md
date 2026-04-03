@@ -114,5 +114,4 @@ The API should respond. You're ready to start making requests.
 ## Next Steps
 
 - Read the [API Reference](./api-reference) to understand available endpoints
-- Set up the [Alert Engine](./alert-engine) thresholds
 - Deploy to production using the [Deployment Guide](./deployment)
