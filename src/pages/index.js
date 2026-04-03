@@ -42,7 +42,7 @@ const repos = [
     { name: 'biobot-hardware', desc: 'KiCad schematics & PCB files', lang: 'KiCad', color: '#2178c4' },
     { name: 'biobot-cloud', desc: 'Node.js API & alert engine', lang: 'JavaScript', color: '#f1e05a' },
     { name: 'biobot-dashboard', desc: 'React sensor dashboard', lang: 'JavaScript', color: '#f1e05a' },
-    { name: 'biobot-gateway', desc: 'LoRa mesh gateway firmware', lang: 'C++', color: '#f34b7d' },
+    { name: 'biobot-gateway', desc: 'Gateway firmware', lang: 'C++', color: '#f34b7d' },
     { name: 'biobot-docs', desc: 'Build guides & deployment handbook', lang: 'Docs', color: '#e34c26' },
 ];
 
