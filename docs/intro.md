@@ -4,15 +4,15 @@ sidebar_position: 1
 
 # Introduction
 
-BioBot is an open-source IoT sensor network designed for early wildfire detection in remote environments. Each node combines precision air quality sensing with cellular connectivity to report smoke and gas anomalies in real time — before a fire has a chance to spread.
+BioBot is an open-source IoT sensor network designed for early wildfire detection in remote environments. Each node combines precision air quality sensing with cellular connectivity to report smoke and gas anomalies in real time, before a fire has a chance to spread.
 
 ## Why BioBot?
 
-Wildfires are increasingly difficult to contain once they grow past their ignition point. Early detection in the first minutes is critical, but remote terrain makes traditional monitoring infrastructure impractical. BioBot solves this by deploying low-power, self-contained sensor nodes that require no local infrastructure — just a solar panel, a battery, and cellular coverage.
+Wildfires are increasingly difficult to contain once they grow past their ignition point. Early detection in the first minutes is critical, but remote terrain makes traditional monitoring infrastructure impractical. BioBot solves this by deploying low-power, self-contained sensor nodes that require no local infrastructure, just a solar panel, a battery, and cellular coverage.
 
 ## How it works
 
-Each BioBot node continuously samples air quality using a Bosch BMV080 particulate matter sensor and a Bosch BME688 gas sensor. When readings exceed configurable thresholds — elevated PM2.5, abnormal VOC signatures, rising temperature — the node transmits an alert over LTE-M via a Blues Notecard to the cloud backend, which triggers notifications and logs the event to the dashboard.
+Each BioBot node continuously samples air quality using a Bosch BMV080 particulate matter sensor and a Bosch BME688 gas sensor. When readings exceed configurable thresholds, elevated PM2.5, abnormal VOC signatures, rising temperature, the node transmits an alert over LTE-M via a Blues Notecard to the cloud backend, which triggers notifications and logs the event to the dashboard.
 
 ## Project structure
 
