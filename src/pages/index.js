@@ -21,9 +21,9 @@ const features = [
         description: 'Engineered for multi-week battery life in the field. Deploy anywhere, forget about charging.',
     },
     {
-        icon: '🗺️',
-        title: 'Mesh Network',
-        description: 'LoRa-based mesh relay nodes extend coverage deep into remote wilderness areas.',
+        icon: '🔧',
+        title: 'Flexible Hardware',
+        description: 'Modular design adapts to your deployment. Swap sensors, swap radios, or extend the platform for new use cases without starting from scratch.',
     },
     {
         icon: '📊',
@@ -33,7 +33,7 @@ const features = [
     {
         icon: '🔓',
         title: 'Fully Open Source',
-        description: 'Hardware schematics, firmware, and cloud stack are all open source under Apache 2.0.',
+        description: 'Hardware schematics, firmware, and cloud stack are all open source under GPLv3.',
     },
 ];
 
@@ -55,7 +55,7 @@ export default function Home() {
                 {/* Hero */}
                 <section className={styles.hero}>
                     <div className={styles.heroInner}>
-                        <div className={styles.heroBadge}>Open Source · Apache 2.0</div>
+                        <div className={styles.heroBadge}>Open Source · GPLv3</div>
                         <h1 className={styles.heroTitle}>
                             Detect wildfires<br />
                             <span className={styles.heroAccent}>before they spread.</span>

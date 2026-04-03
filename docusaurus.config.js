@@ -125,7 +125,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} BioBot Project. Built with Docusaurus.`,
+                copyright: `Copyright © ${new Date().getFullYear()} BioBot Project. Licensed under GPLv3.`,
             },
             prism: {
                 theme: prismThemes.github,
