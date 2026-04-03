@@ -1,23 +1,293 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+/* Hero */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    padding: 5rem 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroInner {
+    flex: 1;
+    min-width: 0;
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.heroBadge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ifm-color-primary);
+    border: 1px solid var(--ifm-color-primary);
+    border-radius: 999px;
+    padding: 0.25rem 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.heroAccent {
+    color: var(--ifm-color-primary);
+}
+
+.heroSub {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ifm-color-emphasis-600);
+    max-width: 520px;
+    margin-bottom: 2rem;
+}
+
+.heroCta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btnPrimary {
+    background: var(--ifm-color-primary);
+    color: #fff !important;
+    padding: 0.7rem 1.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none !important;
+    transition: opacity 0.15s;
+}
+.btnPrimary:hover { opacity: 0.88; }
+
+.btnSecondary {
+    background: transparent;
+    color: var(--ifm-color-primary) !important;
+    padding: 0.7rem 1.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1.5px solid var(--ifm-color-primary);
+    text-decoration: none !important;
+    transition: background 0.15s;
+}
+.btnSecondary:hover { background: var(--ifm-color-primary-lightest); }
+
+/* Sensor card */
+.heroVisual {
+    flex: 0 0 300px;
+}
+
+.sensorCard {
+    background: var(--ifm-card-background-color);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.sensorDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #22c55e;
+    display: inline-block;
+    margin-right: 0.5rem;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+}
+
+.sensorLabel {
+    display: inline;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ifm-color-emphasis-600);
+    vertical-align: middle;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.sensorGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.sensorStat {
+    background: var(--ifm-background-surface-color);
+    border-radius: 10px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.statVal {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ifm-color-primary);
+    line-height: 1;
+}
+
+.statUnit {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-left: 1px;
+    opacity: 0.7;
+}
+
+.statKey {
+    font-size: 0.7rem;
+    color: var(--ifm-color-emphasis-500);
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sensorFooter {
+    font-size: 0.72rem;
+    color: var(--ifm-color-emphasis-400);
+    text-align: center;
+    border-top: 1px solid var(--ifm-color-emphasis-200);
+    padding-top: 0.75rem;
+}
+
+/* Sections */
+.sectionInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+}
+
+/* Features */
+.features {
+    background: var(--ifm-background-surface-color);
+}
+
+.featureGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.featureCard {
+    background: var(--ifm-card-background-color);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.featureIcon {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.featureTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.featureDesc {
+    font-size: 0.9rem;
+    color: var(--ifm-color-emphasis-600);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Repos */
+.repoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.repoCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: var(--ifm-card-background-color);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    text-decoration: none !important;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.repoCard:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.repoName {
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: monospace;
+    color: var(--ifm-color-primary);
+}
+
+.repoDesc {
+    font-size: 0.82rem;
+    color: var(--ifm-color-emphasis-600);
+    flex: 1;
+}
+
+.repoLang {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--ifm-color-emphasis-500);
+    margin-top: 0.5rem;
+}
+
+.langDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* CTA */
+.cta {
+    background: var(--ifm-background-surface-color);
+    text-align: center;
+}
+
+.ctaTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.ctaSub {
+    font-size: 1rem;
+    color: var(--ifm-color-emphasis-600);
+    margin-bottom: 2rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        padding: 3rem 1.25rem 2.5rem;
+    }
+    .heroTitle { font-size: 2.2rem; }
+    .heroVisual { width: 100%; flex: unset; }
+    .sensorCard { max-width: 100%; }
 }
