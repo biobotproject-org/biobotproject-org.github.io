@@ -5,7 +5,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
     title: 'BioBot Project',
     tagline: 'Open-source wildfire detection sensor network',
-    favicon: 'img/favicon.ico',
+    favicon: 'img/favicon.png',
 
     future: {
         v4: true,
@@ -35,18 +35,7 @@ const config = {
                     editUrl:
                         'https://github.com/biobotproject-org/biobotproject-org.github.io/tree/main/',
                 },
-                blog: {
-                    showReadingTime: true,
-                    feedOptions: {
-                        type: ['rss', 'atom'],
-                        xslt: true,
-                    },
-                    editUrl:
-                        'https://github.com/biobotproject-org/biobotproject-org.github.io/tree/main/',
-                    onInlineTags: 'warn',
-                    onInlineAuthors: 'warn',
-                    onUntruncatedBlogPosts: 'warn',
-                },
+                blog: false,
                 theme: {
                     customCss: './src/css/custom.css',
                 },
@@ -57,7 +46,7 @@ const config = {
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
-            image: 'img/docusaurus-social-card.jpg',
+            image: 'img/social-card.png',
             colorMode: {
                 respectPrefersColorScheme: true,
             },
@@ -74,7 +63,6 @@ const config = {
                         position: 'left',
                         label: 'Docs',
                     },
-                    {to: '/blog', label: 'Blog', position: 'left'},
                     {
                         href: 'https://github.com/biobotproject-org',
                         label: 'GitHub',
@@ -115,17 +103,13 @@ const config = {
                         title: 'More',
                         items: [
                             {
-                                label: 'Blog',
-                                to: '/blog',
-                            },
-                            {
                                 label: 'GitHub Org',
                                 href: 'https://github.com/biobotproject-org',
                             },
                         ],
                     },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} BioBot Project. Licensed under GPLv3.`,
+                copyright: `Copyright © ${new Date().getFullYear()} BioBot Project. Code Apache-2.0, hardware CERN-OHL-P-2.0, data and docs CC BY 4.0.`,
             },
             prism: {
                 theme: prismThemes.github,

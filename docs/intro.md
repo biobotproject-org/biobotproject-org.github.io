@@ -21,7 +21,7 @@ The BioBot project is split across several repositories:
 | Repo | Description |
 |---|---|
 | [biobot-firmware](https://github.com/biobotproject-org/biobot-firmware) | Arduino/PlatformIO firmware for the sensor node |
-| [biobot-hardware](https://github.com/biobotproject-org/biobot-hardware) | KiCad schematics, PCB layout, BOM |
+| [biobot-hardware](https://github.com/biobotproject-org/biobot-hardware) | Carrier PCB design, BOM, gerbers, assembly photos |
 | [biobot-cloud](https://github.com/biobotproject-org/biobot-cloud) | Node.js API, database schema, alert engine |
 | [biobot-dashboard](https://github.com/biobotproject-org/biobot-dashboard) | React web dashboard |
 | [biobot-gateway](https://github.com/biobotproject-org/biobot-gateway) | Gateway firmware for border nodes |
@@ -29,4 +29,10 @@ The BioBot project is split across several repositories:
 
 ## License
 
-BioBot is fully open source under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
+BioBot is fully open source. Each kind of work uses the license that fits it:
+
+| What | License |
+|---|---|
+| Firmware, cloud API, dashboard, website code | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) |
+| Hardware designs (schematics, layout, BOM) | [CERN-OHL-P-2.0](https://ohwr.org/cern_ohl_p_v2.txt) |
+| Sensor data and documentation text | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |

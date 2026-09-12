@@ -1,41 +1,16 @@
-# Website
+# biobotproject-org.github.io
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+The BioBot project website and documentation, built with
+[Docusaurus](https://docusaurus.io/) and published to GitHub Pages by
+the workflow in `.github/workflows/deploy.yml` on every push to `main`.
 
-## Installation
-
-```bash
-yarn
+```sh
+npm ci          # install
+npm start       # local dev server with live reload
+npm run build   # production build into build/
 ```
 
-## Local Development
+Docs live in `docs/`, the landing page in `src/pages/index.js`, and the
+BOM calculator in `src/components/BomCalculator.js`.
 
-```bash
-yarn start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```bash
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Website code is Apache-2.0. Documentation text is CC BY 4.0.

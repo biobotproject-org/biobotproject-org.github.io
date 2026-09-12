@@ -13,8 +13,8 @@ This page covers deploying the biobot-cloud API to a production server, and sepa
 
 ## Deploying the API
 
-:::info Docker support coming soon
-A Dockerfile and `docker-compose.yml` will be added in a future release, making it possible to run the API and database as containers without manual dependency installation.
+:::tip Docker Compose is available
+The [biobot-infrastructure](https://github.com/biobotproject-org/biobot-infrastructure) repository runs the database, API, and dashboard as containers with one `docker compose up`. Use it unless you need the manual setup below.
 :::
 
 ### Recommended: DigitalOcean Droplet or VPS
