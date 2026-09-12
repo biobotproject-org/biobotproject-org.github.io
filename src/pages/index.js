@@ -33,13 +33,13 @@ const features = [
     {
         icon: '🔓',
         title: 'Fully Open Source',
-        description: 'Hardware schematics, firmware, and cloud stack are all open source under GPLv3.',
+        description: 'Firmware and cloud stack under Apache-2.0, hardware under CERN-OHL-P, data and docs under CC BY 4.0.',
     },
 ];
 
 const repos = [
     { name: 'biobot-firmware', desc: 'Arduino/PlatformIO sensor firmware', lang: 'C++', color: '#f34b7d' },
-    { name: 'biobot-hardware', desc: 'KiCad schematics & PCB files', lang: 'KiCad', color: '#2178c4' },
+    { name: 'biobot-hardware', desc: 'Carrier PCB: schematics, layout, BOM, gerbers', lang: 'Altium', color: '#2178c4' },
     { name: 'biobot-cloud', desc: 'Node.js API & alert engine', lang: 'JavaScript', color: '#f1e05a' },
     { name: 'biobot-dashboard', desc: 'React sensor dashboard', lang: 'JavaScript', color: '#f1e05a' },
     { name: 'biobot-gateway', desc: 'Gateway firmware', lang: 'C++', color: '#f34b7d' },
@@ -55,7 +55,7 @@ export default function Home() {
                 {/* Hero */}
                 <section className={styles.hero}>
                     <div className={styles.heroInner}>
-                        <div className={styles.heroBadge}>Open Source · GPLv3</div>
+                        <div className={styles.heroBadge}>Open Source · Apache-2.0 · CERN-OHL-P</div>
                         <h1 className={styles.heroTitle}>
                             Detect wildfires<br />
                             <span className={styles.heroAccent}>before they spread.</span>

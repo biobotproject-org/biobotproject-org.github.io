@@ -7,10 +7,10 @@ sidebar_position: 3
 
 # API Reference
 
-BioBot Cloud exposes a RESTful HTTP API. All endpoints are served from the base URL of your deployed instance (e.g. `http://localhost:3001`).
+BioBot Cloud exposes a RESTful HTTP API. All endpoints are served from the base URL of your deployed instance (e.g. `http://localhost:3000`).
 
-:::info Live API docs coming soon
-In a future release, this documentation will also be served directly from the API itself (e.g. `GET /api/docs`). Once available, that endpoint will always reflect the current deployed version of the server.
+:::tip Live API docs
+A running server also serves interactive Swagger documentation at `/api-docs`, which always reflects the deployed version.
 :::
 
 ## Authentication
