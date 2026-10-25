@@ -1,6 +1,6 @@
 # biobotproject-org.github.io
 
-The BioBot project website and documentation, built with
+The Wildfire Alarm project website and documentation, built with
 [Docusaurus](https://docusaurus.io/) and published to GitHub Pages by
 the workflow in `.github/workflows/deploy.yml` on every push to `main`.
 
