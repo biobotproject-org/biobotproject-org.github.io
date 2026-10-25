@@ -4,32 +4,39 @@ sidebar_position: 1
 
 # Introduction
 
-BioBot is an open-source IoT sensor network designed for early wildfire detection in remote environments. Each node combines precision air quality sensing with cellular connectivity to report smoke and gas anomalies in real time, before a fire has a chance to spread.
+Wildfire Alarm is an open-source sensor network for early wildfire detection. Low-cost nodes placed at the forest edge sample the air every 30 seconds, decide on the node itself whether something looks like smoke or fire, and report over cellular to a cloud service that opens an incident and emails the people responsible for that area.
 
-## Why BioBot?
+Project website: [wildfirealarm.org](https://wildfirealarm.org/).
 
-Wildfires are increasingly difficult to contain once they grow past their ignition point. Early detection in the first minutes is critical, but remote terrain makes traditional monitoring infrastructure impractical. BioBot solves this by deploying low-power, self-contained sensor nodes that require no local infrastructure, just a solar panel, a battery, and cellular coverage.
+## Why Wildfire Alarm?
+
+Wildfires are hardest to stop once they grow past their ignition point, so the first minutes matter. Remote terrain makes cameras and staffed lookouts expensive. A Wildfire Alarm node needs no local infrastructure: a 12 V battery with a solar charge controller, and cellular coverage.
 
 ## How it works
 
-Each BioBot node continuously samples air quality using a Bosch BMV080 particulate matter sensor and a Bosch BME688 gas sensor. When readings exceed configurable thresholds, elevated PM2.5, abnormal VOC signatures, rising temperature, the node transmits an alert over LTE-M via a Blues Notecard to the cloud backend, which triggers notifications and logs the event to the dashboard.
+1. **Sense.** Each node reads a Bosch BMV080 (PM1, PM2.5, PM10) and a Bosch BME688 (gas resistance, temperature, humidity, pressure) every 30 seconds.
+2. **Decide on the node.** An on-device anomaly detector compares each sample with absolute limits (for example PM2.5 above 55 µg/m³) and with a baseline the node learns for its own spot. Signals must persist for several samples, so a single gust does not trip an alarm. The result is a severity: `none`, `watch`, `alert`, `critical` or `fault`.
+3. **Report.** A Blues Notecard sends a batch of readings every 10 minutes (`data.qo`) and an alert immediately when the severity reaches `alert` or above (`alert.qo`). Notehub forwards both to the Wildfire Alarm API.
+4. **Act.** The API opens an incident, emails the hosts with the readings and a map link, and shows it on the dashboard. A host drives out, checks, and records what they found: fire, false alarm, or sensor fault.
+
+The dashboard also shows a live map with the current wind at each node, a rough "where could a fire be in 30, 60 and 120 minutes" envelope, and NASA FIRMS satellite hotspots nearby.
 
 ## Project structure
 
-The BioBot project is split across several repositories:
-
 | Repo | Description |
 |---|---|
-| [biobot-firmware](https://github.com/biobotproject-org/biobot-firmware) | Arduino/PlatformIO firmware for the sensor node |
-| [biobot-hardware](https://github.com/biobotproject-org/biobot-hardware) | Carrier PCB design, BOM, gerbers, assembly photos |
-| [biobot-cloud](https://github.com/biobotproject-org/biobot-cloud) | Node.js API, database schema, alert engine |
+| [biobot-firmware](https://github.com/biobotproject-org/biobot-firmware) | Arduino firmware for the Nano ESP32 node: sensors, on-device anomaly detection, Notecard uplink |
+| [biobot-hardware](https://github.com/biobotproject-org/biobot-hardware) | Carrier PCB (Altium), gerbers, BOM, assembly photos |
+| [biobot-cloud](https://github.com/biobotproject-org/biobot-cloud) | Node.js API: Notehub ingest, incidents, email alerts, live map data |
 | [biobot-dashboard](https://github.com/biobotproject-org/biobot-dashboard) | React web dashboard |
-| [biobot-gateway](https://github.com/biobotproject-org/biobot-gateway) | Gateway firmware for border nodes |
-| [biobot-data](https://github.com/biobotproject-org/biobot-data) | Open datasets and ML training data |
+| [biobot-infrastructure](https://github.com/biobotproject-org/biobot-infrastructure) | Docker Compose stack that runs the database, API and dashboard |
+| [biobot-data](https://github.com/biobotproject-org/biobot-data) | Open datasets from test burns and field recordings |
+
+The repository names keep the project's earlier name, BioBot.
 
 ## License
 
-BioBot is fully open source. Each kind of work uses the license that fits it:
+Wildfire Alarm is fully open source. Each kind of work uses the license that fits it:
 
 | What | License |
 |---|---|

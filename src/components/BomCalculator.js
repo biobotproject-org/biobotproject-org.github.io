@@ -46,9 +46,10 @@ const parts = [
     },
     {
         name: 'Notecarrier',
-        role: 'Notecard breakout board',
+        role: 'Breadboard builds only; the carrier PCB has an M.2 socket',
         qty: 1,
         options: [
+            { vendor: 'None', label: 'Not needed (carrier PCB)', price: 0.00, url: null },
             { vendor: 'Blues', label: 'Notecarrier-B', price: 19.00, url: 'https://shop.blues.com/products/carr-b' },
             { vendor: 'Blues', label: 'Notecarrier-A', price: 19.00, url: 'https://shop.blues.com/products/carr-a' },
         ],
@@ -61,8 +62,8 @@ const parts = [
             { vendor: 'Breadboard', label: 'Breadboard (prototyping only)', price: 3.95, url: 'https://www.adafruit.com/product/64' },
             { vendor: 'Adafruit', label: 'Perma-Proto half-size protoboard', price: 4.50, url: 'https://www.adafruit.com/product/1609' },
             { vendor: 'SparkFun', label: 'SparkFun ProtoBoard', price: 3.95, url: 'https://www.sparkfun.com/products/12070' },
-            { vendor: 'JLCPCB', label: 'BioBot custom PCB (JLCPCB, 5-pack)', price: 8.00, url: 'https://jlcpcb.com' },
-            { vendor: 'PCBWay', label: 'BioBot custom PCB (PCBWay, 5-pack)', price: 12.00, url: 'https://www.pcbway.com' },
+            { vendor: 'JLCPCB', label: 'Wildfire Alarm carrier PCB (JLCPCB, 5-pack)', price: 8.00, url: 'https://jlcpcb.com' },
+            { vendor: 'PCBWay', label: 'Wildfire Alarm carrier PCB (PCBWay, 5-pack)', price: 12.00, url: 'https://www.pcbway.com' },
         ],
     },
     {

@@ -16,19 +16,19 @@ const features = [
         description: 'Blues Notecard provides reliable LTE-M connectivity from remote deployments, no Wi-Fi required.',
     },
     {
-        icon: '⚡',
-        title: 'Ultra-Low Power',
-        description: 'Engineered for multi-week battery life in the field. Deploy anywhere, forget about charging.',
+        icon: '🧠',
+        title: 'Decides on the Node',
+        description: 'An on-device anomaly detector learns each spot\'s normal air and sends an alert the moment smoke is confirmed, not at the next upload.',
     },
     {
         icon: '🔧',
-        title: 'Flexible Hardware',
-        description: 'Modular design adapts to your deployment. Swap sensors, swap radios, or extend the platform for new use cases without starting from scratch.',
+        title: 'Off-the-shelf Hardware',
+        description: 'A small carrier board for an Arduino Nano ESP32, a Notecard and two Bosch sensors, powered by a 12 V battery and solar.',
     },
     {
         icon: '📊',
-        title: 'Live Dashboard',
-        description: 'Real-time sensor data, deployment maps, and alert management from any browser.',
+        title: 'Live Map & Incidents',
+        description: 'Nodes on a live map with wind-driven spread estimates and NASA satellite hotspots. Incidents are emailed to hosts and tracked to an outcome.',
     },
     {
         icon: '🔓',
@@ -38,12 +38,12 @@ const features = [
 ];
 
 const repos = [
-    { name: 'biobot-firmware', desc: 'Arduino/PlatformIO sensor firmware', lang: 'C++', color: '#f34b7d' },
+    { name: 'biobot-firmware', desc: 'Node firmware with on-device anomaly detection', lang: 'C++', color: '#f34b7d' },
     { name: 'biobot-hardware', desc: 'Carrier PCB: schematics, layout, BOM, gerbers', lang: 'Altium', color: '#2178c4' },
-    { name: 'biobot-cloud', desc: 'Node.js API & alert engine', lang: 'JavaScript', color: '#f1e05a' },
-    { name: 'biobot-dashboard', desc: 'React sensor dashboard', lang: 'JavaScript', color: '#f1e05a' },
-    { name: 'biobot-gateway', desc: 'Gateway firmware', lang: 'C++', color: '#f34b7d' },
-    { name: 'biobot-docs', desc: 'Build guides & deployment handbook', lang: 'Docs', color: '#e34c26' },
+    { name: 'biobot-cloud', desc: 'Node.js API: ingest, incidents, alerts', lang: 'JavaScript', color: '#f1e05a' },
+    { name: 'biobot-dashboard', desc: 'React dashboard and live map', lang: 'JavaScript', color: '#f1e05a' },
+    { name: 'biobot-infrastructure', desc: 'Docker Compose deployment stack', lang: 'Docker', color: '#384d54' },
+    { name: 'biobot-data', desc: 'Open datasets from test burns', lang: 'Data', color: '#e34c26' },
 ];
 
 export default function Home() {
@@ -61,7 +61,7 @@ export default function Home() {
                             <span className={styles.heroAccent}>before they spread.</span>
                         </h1>
                         <p className={styles.heroSub}>
-                            BioBot is an open-source IoT sensor network combining particulate matter detection,
+                            Wildfire Alarm is an open-source sensor network combining particulate matter detection,
                             gas sensing, and cellular connectivity to provide early wildfire warnings in remote areas.
                         </p>
                         <div className={styles.heroCta}>
@@ -89,11 +89,11 @@ export default function Home() {
                                     <span className={styles.statKey}>Humidity</span>
                                 </div>
                                 <div className={styles.sensorStat}>
-                                    <span className={styles.statVal}>0.4<span className={styles.statUnit}>ppm</span></span>
-                                    <span className={styles.statKey}>VOC</span>
+                                    <span className={styles.statVal}>118<span className={styles.statUnit}>kΩ</span></span>
+                                    <span className={styles.statKey}>Gas</span>
                                 </div>
                             </div>
-                            <div className={styles.sensorFooter}>Last ping: 2 min ago · Battery 87%</div>
+                            <div className={styles.sensorFooter}>Last report: 2 min ago · Severity: none</div>
                         </div>
                     </div>
                 </section>
@@ -141,7 +141,7 @@ export default function Home() {
                 <section className={styles.cta}>
                     <div className={styles.sectionInner}>
                         <h2 className={styles.ctaTitle}>Ready to deploy?</h2>
-                        <p className={styles.ctaSub}>Read the build guide, flash the firmware, and have your first node online in an afternoon.</p>
+                        <p className={styles.ctaSub}>Run the stack locally, simulate a node, and see an incident open on the live map in a few minutes.</p>
                         <Link className={styles.btnPrimary} to="/docs/intro">Read the Docs →</Link>
                     </div>
                 </section>
