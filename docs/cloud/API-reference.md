@@ -7,337 +7,174 @@ sidebar_position: 3
 
 # API Reference
 
-BioBot Cloud exposes a RESTful HTTP API. All endpoints are served from the base URL of your deployed instance (e.g. `http://localhost:3000`).
+The Wildfire Alarm API is plain HTTP and JSON. In Docker deployments the dashboard reaches it under `/api/` on the same host, for example `https://app.example.org/api/incidents`. Locally it is served directly on `http://localhost:3000`.
 
 :::tip Live API docs
-A running server also serves interactive Swagger documentation at `/api-docs`, which always reflects the deployed version.
+A running server also serves interactive Swagger documentation at `/api-docs`. It is generated from the code and always matches the deployed version, including every query parameter and response field.
 :::
 
 ## Authentication
 
-Protected endpoints require either a JSON Web Token or an API key passed in the `Authorization` header.
-
-**JWT (obtained via `/login`):**
+Protected endpoints take a token in the `Authorization` header:
 
 ```
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer <jwt from /login>
+Authorization: Bearer sk_<api key>
 ```
 
-**API key (obtained via `/api-keys`):**
+| Credential | Obtained from | Can do |
+|---|---|---|
+| JWT | `POST /login`, valid 24 h | everything the user's role allows |
+| User API key | `POST /api-keys` with `scope: "user"` | acts as the owning user, for scripts |
+| Ingest key | `POST /api-keys` with `scope: "ingest"` | only `POST /ingest/notehub` |
 
-```
-Authorization: Bearer sk_<your_api_key>
-```
+Endpoints marked **admin** also require the user's role to be `admin`. The role is read from the database on every request.
 
 ---
 
-## Auth Endpoints
+## Account
 
 ### `POST /register`
 
-Register a new user account.
-
-**Request body:**
-
 ```json
-{
-  "username": "operator1",
-  "email": "operator1@example.com",
-  "password": "securepassword"
-}
+{ "username": "operator1", "email": "operator1@example.com", "password": "Str0ngPassw0rd!" }
 ```
 
-**Response `201`:**
-
-```json
-{
-  "message": "User registered successfully.",
-  "userId": 1
-}
-```
-
----
+Returns `201` with `{ message, user: { id, username, email, role }, token }`. New accounts always get the role `user`; a `role` in the body is ignored.
 
 ### `POST /login`
 
-Authenticate and receive a JWT.
-
-**Request body:**
-
 ```json
-{
-  "email": "operator1@example.com",
-  "password": "securepassword"
-}
+{ "username": "operator1", "password": "Str0ngPassw0rd!" }
 ```
 
-**Response `200`:**
+`email` works in place of `username`. Returns `200` with `{ message, user, token }`.
 
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
+### `GET /me`
 
----
+The signed-in user with the role currently in the database: `{ id, username, email, role }`.
 
-## API Key Endpoints
+### API keys
 
-### `POST /api-keys`
-
-Create a new API key for use with device integrations and automated ingestion.
-
-**Request body:**
-
-```json
-{
-  "name": "My API Key"
-}
-```
-
-**Response `201`:**
-
-```json
-{
-  "key": "sk_8a6b6d4fb38feaa0b5b225d8306b36049c679cb89c15bbab1f3bdc0163ef6dd4",
-  "name": "My API Key"
-}
-```
-
-🔒 *Requires authentication.*
-
----
-
-## Device Endpoints
-
-Devices represent individual sensor nodes deployed in the field.
-
-### `GET /devices`
-
-Returns a list of all registered sensor nodes.
-
-🔒 *Requires authentication.*
-
-**Response `200`:**
-
-```json
-[
-  {
-    "id": 1,
-    "deviceId": "sensor-001",
-    "name": "Fire Sensor Unit 1",
-    "type": "fire-monitor",
-    "status": "active"
-  }
-]
-```
-
----
-
-### `POST /devices`
-
-Register a new sensor node.
-
-🔒 *Requires authentication.*
-
-**Request body:**
-
-```json
-{
-  "deviceId": "sensor-001",
-  "name": "Fire Sensor Unit 1",
-  "type": "fire-monitor",
-  "status": "active"
-}
-```
-
-**Response `201`:**
-
-```json
-{
-  "id": 1,
-  "deviceId": "sensor-001",
-  "name": "Fire Sensor Unit 1"
-}
-```
-
----
-
-### `PATCH /devices/:id/status`
-
-Update the status of a registered sensor node.
-
-🔒 *Requires authentication.*
-
-**Request body:**
-
-```json
-{
-  "status": "active"
-}
-```
-
-**Response `200`:**
-
-```json
-{
-  "message": "Device status updated.",
-  "deviceId": 1
-}
-```
-
----
-
-### `DELETE /devices/:id`
-
-Remove a registered sensor node.
-
-🔒 *Requires authentication.*
-
-**Response `200`:**
-
-```json
-{
-  "message": "Device deleted.",
-  "deviceId": 3
-}
-```
-
----
-
-## Sensor Data Endpoints
-
-### `GET /sensordata`
-
-Retrieve recent sensor readings.
-
-🔒 *Requires authentication.*
-
-**Response `200`:**
-
-```json
-[
-  {
-    "deviceId": "sensor-001",
-    "readings": [
-      { "value": 67, "unit": "°F", "readingType": "temperature" },
-      { "value": 41, "unit": "%", "readingType": "humidity" }
-    ]
-  }
-]
-```
-
----
-
-### `POST /sensordata`
-
-Submit one or more sensor readings in a single batch. This is the primary data ingestion endpoint called by the gateway.
-
-**Request body:**
-
-```json
-{
-  "requests": [
-    {
-      "deviceId": "sensor-001",
-      "readings": [
-        { "value": 67, "unit": "°F", "readingType": "temperature" },
-        { "value": 41, "unit": "%", "readingType": "humidity" }
-      ]
-    },
-    {
-      "deviceId": "sensor-002",
-      "readings": [
-        { "value": 76, "unit": "°F", "readingType": "temperature" }
-      ]
-    }
-  ]
-}
-```
-
-**Response `201`:**
-
-```json
-{
-  "message": "Readings ingested.",
-  "count": 2
-}
-```
-
----
-
-### `DELETE /sensordata`
-
-Delete sensor readings for a specific device.
-
-🔒 *Requires authentication.*
-
-**Query parameters:**
-
-| Parameter | Type | Description |
+| Method | Path | Notes |
 |---|---|---|
-| `deviceId` | string | The device whose readings should be deleted |
-
-**Example:**
-
-```
-DELETE /sensordata?deviceId=device-123
-```
+| `POST` | `/api-keys` | Body `{ name, description?, scope: "user" \| "ingest" }`. The key itself is returned once, in `apiKey.key` |
+| `GET` | `/api-keys` | The caller's keys with scope and `lastUsedAt`, never the key itself |
+| `DELETE` | `/api-keys/:id` | Revokes a key |
 
 ---
 
-## Power Status Endpoints
+## Notehub ingest
 
-### `GET /power-status`
+### `POST /ingest/notehub`
 
-Returns the current power status of sensor nodes.
+Target of the Notehub HTTP route. Authenticate with an ingest key. The body is the Notehub event envelope; the API dispatches on its `file` field:
 
-🔒 *Requires authentication.*
+| `file` | Body from the node | Result `action` |
+|---|---|---|
+| `device.qo` | `{ deviceId, name, type }` | `device_created` / `device_updated` |
+| `data.qo` | `{ requests: [{ deviceId, readings: [{ readingType, unit, value, timestamp }], anomaly: { severity, score } }] }` | `readings_stored` |
+| `alert.qo` | `{ deviceId, event: "raised" \| "updated" \| "cleared", severity, score, signals, readings, baseline, timestamp }` | `incident_opened` / `incident_updated` / `incident_closed` / `duplicate_ignored` |
+| anything else | system notes such as `_health.qo` | `ignored` (last seen, location and voltage are still refreshed) |
 
----
-
-## Health Endpoints
-
-These endpoints expose API observability data and do not require authentication.
-
-### `GET /api/health/stats`
-
-Returns overall API health statistics.
+A redelivered event (same Notehub `event` UUID) is acknowledged with 200 and not stored again. A malformed body returns 400.
 
 ---
 
-### `GET /api/health/endpoints`
+## Devices
 
-Returns per-endpoint health and availability information.
+| Method | Path | Notes |
+|---|---|---|
+| `GET` | `/devices` | All nodes, with position, last severity, last seen and voltage |
+| `GET` | `/devices/:id` | One node, by database id or `deviceId` |
+| `POST` | `/devices` | Register a node by hand: `{ deviceId, name, type, status? }`. Nodes normally register themselves through `device.qo` |
+| `PATCH` | `/devices/:id/status` | `{ status: "active" \| "inactive" \| "maintenance" \| "hibernation" }`. Owner or admin |
+| `DELETE` | `/devices/:id` | Owner or admin |
+
+## Readings
+
+### `GET /readings`
+
+Readings grouped by batch, newest first, with each batch's anomaly severity and score.
+
+| Query parameter | Meaning |
+|---|---|
+| `deviceId` | One node, by database id, `deviceId` (e.g. `biobot-001`) or Notecard UID (`dev:…`). An unknown id returns an empty page |
+| `readingType` | e.g. `pm25`, `gasResistance`, `temperature`, `humidity` |
+| `startDate`, `endDate` | ISO 8601 time range |
+| `minValue`, `maxValue`, `unit` | Value filters |
+| `sortBy`, `sortOrder` | Sorting, default `timestamp DESC` |
+| `page`, `limit` | Paging |
+
+## Incidents
+
+| Method | Path | Notes |
+|---|---|---|
+| `GET` | `/incidents` | Newest first. Filters: `status=open\|closed`, `deviceId`, `limit` |
+| `GET` | `/incidents/:id` | One incident with its full event timeline |
+| `GET` | `/incidents/:id/context` | Current wind, spread envelope (open incidents only) and nearest satellite hotspot |
+| `POST` | `/incidents/:id/acknowledge` | Record the drive-out: `{ outcome: "fire" \| "false_alarm" \| "sensor_fault" \| "unknown", notes? }` |
+
+## Live map
+
+### `GET /map`
+
+Everything the live map draws, in one call: `devices`, `openIncidents` (each with `weather`, `spread` and `satellite`), and `satellite.hotspots` within 25 km of any node over the last 48 hours. `satellite.status` is `not_configured` until `FIRMS_MAP_KEY` is set. Weather and satellite lookups are cached, so polling every 15 seconds is fine.
+
+### Demo fire (admin)
+
+| Method | Path | Notes |
+|---|---|---|
+| `POST` | `/demo/fire` | Optional `{ latitude, longitude }`. Starts a scripted fire on five demo nodes, using the live wind there. No emails are sent |
+| `GET` | `/demo` | State of the demo |
+| `DELETE` | `/demo` | Stops the demo and deletes every demo node and its data |
+
+## Users (admin)
+
+| Method | Path | Notes |
+|---|---|---|
+| `GET` | `/users` | All users, with counts of ingest keys, other keys and owned devices |
+| `PATCH` | `/users/:id/role` | `{ role: "admin" \| "user" }`. You cannot demote yourself or the last admin |
+| `DELETE` | `/users/:id` | Revokes the user's keys and keeps incident outcomes they recorded. You cannot delete yourself or the last admin |
+
+Deleting a user who owns an ingest key stops every Notehub route that uses that key.
+
+## API health
+
+`GET /api/health/stats`, `/api/health/endpoints`, `/api/health/latency-trends` and `/api/health/errors` report request counts, latency and recent errors, as shown on the dashboard's API Health page.
+
+## Older endpoints
+
+These came before the Notehub ingest path and are kept for compatibility:
+
+| Method | Path | Notes |
+|---|---|---|
+| `GET` / `POST` / `DELETE` | `/sensordata` | Direct reading submission and query, with server-side threshold checks |
+| `GET` | `/alerts`, `POST /alerts/:id/acknowledge` | Threshold alerts. Node alerts also appear here, mapped to `low`/`medium`/`high`/`critical` |
+| `GET` | `/power-status` | Power events |
 
 ---
 
-### `GET /api/health/latency-trends`
+## Errors
 
-Returns latency trend data across API endpoints.
-
----
-
-### `GET /api/health/errors`
-
-Returns a log of recent API errors.
-
----
-
-## Error Responses
-
-All endpoints return standard error shapes:
+Errors are JSON with an `error` field:
 
 ```json
-{
-  "error": "Unauthorized",
-  "message": "A valid Bearer token is required."
-}
+{ "error": "Incident not found" }
 ```
 
-| Status Code | Meaning |
+Validation failures add the offending fields:
+
+```json
+{ "error": "Validation failed", "details": [{ "field": "name", "message": "name is required" }] }
+```
+
+| Status | Meaning |
 |---|---|
-| `400` | Bad request -- malformed body or missing required fields |
-| `401` | Unauthorized -- missing or invalid token or API key |
-| `404` | Resource not found |
-| `500` | Internal server error |
+| `400` | Malformed body or missing fields |
+| `401` | Missing, invalid or expired token or key |
+| `403` | Authenticated, but not allowed (for example, not an admin) |
+| `404` | Not found |
+| `409` | Conflict, for example demoting the last admin or starting a second demo |
+| `422` | Validation failed |
+| `503` | The database is reconnecting; try again shortly |

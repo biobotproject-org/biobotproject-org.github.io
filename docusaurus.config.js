@@ -3,8 +3,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'BioBot Project',
-    tagline: 'Open-source wildfire detection sensor network',
+    title: 'Wildfire Alarm',
+    tagline: 'Open-source early wildfire detection sensor network',
     favicon: 'img/favicon.png',
 
     future: {
@@ -51,9 +51,9 @@ const config = {
                 respectPrefersColorScheme: true,
             },
             navbar: {
-                title: 'BioBot Project',
+                title: 'Wildfire Alarm',
                 logo: {
-                    alt: 'BioBot Logo',
+                    alt: 'Wildfire Alarm logo',
                     src: 'img/logo.svg',
                 },
                 items: [
@@ -62,6 +62,11 @@ const config = {
                         sidebarId: 'tutorialSidebar',
                         position: 'left',
                         label: 'Docs',
+                    },
+                    {
+                        href: 'https://wildfirealarm.org/',
+                        label: 'Website',
+                        position: 'right',
                     },
                     {
                         href: 'https://github.com/biobotproject-org',
@@ -103,13 +108,17 @@ const config = {
                         title: 'More',
                         items: [
                             {
+                                label: 'wildfirealarm.org',
+                                href: 'https://wildfirealarm.org/',
+                            },
+                            {
                                 label: 'GitHub Org',
                                 href: 'https://github.com/biobotproject-org',
                             },
                         ],
                     },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} BioBot Project. Code Apache-2.0, hardware CERN-OHL-P-2.0, data and docs CC BY 4.0.`,
+                copyright: `Copyright © ${new Date().getFullYear()} Wildfire Alarm. Code Apache-2.0, hardware CERN-OHL-P-2.0, data and docs CC BY 4.0.`,
             },
             prism: {
                 theme: prismThemes.github,

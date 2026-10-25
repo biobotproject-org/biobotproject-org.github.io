@@ -7,111 +7,95 @@ sidebar_position: 2
 
 # Getting Started
 
-This guide walks you through cloning the repository, installing dependencies, configuring your environment, and running the server locally.
+Run the whole stack (database, API and dashboard) on your machine, then feed it data from a simulated node. No hardware or Notehub account is needed.
 
 ## Prerequisites
 
-Before you begin, make sure you have the following installed:
-
-- **Node.js** v18 or later (`node --version` to check)
-- **npm** v9 or later (comes with Node.js)
-- **MySQL** 8.x running locally or accessible remotely
+- **Docker** with Docker Compose v2.24 or later
 - **Git**
+- **Python 3**, for the node simulator
+- For working on the API without Docker: **Node.js 20** or later
 
-## 1. Clone the Repository
+## 1. Clone the stack
 
-```bash
-git clone https://github.com/biobotproject-org/biobot-cloud.git
-cd biobot-cloud
-```
-
-## 2. Install Dependencies
+The API and the dashboard are git submodules of `biobot-infrastructure`:
 
 ```bash
-npm install
+git clone --recurse-submodules https://github.com/biobotproject-org/biobot-infrastructure.git
+cd biobot-infrastructure
 ```
 
-## 3. Configure Environment Variables
-
-The server reads its configuration from a `.env` file in the project root. A template is already committed — copy and edit it before starting:
+## 2. Configure
 
 ```bash
-cp .env .env.local  # optional — or edit .env directly
+cp .env.example .env
 ```
 
-Open `.env` and set the values appropriate for your environment:
+Fill in at least `DB_PASSWORD`, `DB_ROOT_PASSWORD` and `JWT_SECRET`. Generate each value with `openssl rand -base64 32`.
 
-```env
-# Database
-DB_NAME=firethingys
-DB_USER=root
-DB_PASSWORD=your_password_here
-DB_HOST=localhost
-DB_PORT=3306
+| Variable | Purpose |
+|---|---|
+| `DB_ROOT_PASSWORD`, `DB_PASSWORD` | MariaDB root and application passwords |
+| `DB_NAME`, `DB_USER` | Database and user name (default `biobot`) |
+| `JWT_SECRET` | Signs dashboard login tokens |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` | Outgoing mail for incident emails. Leave `SMTP_HOST` empty to disable |
+| `ALERT_EMAIL_FROM`, `ALERT_EMAIL_TO` | Sender, and comma-separated recipients of incident emails |
+| `DASHBOARD_URL` | Public dashboard address, used for links in emails |
+| `FIRMS_MAP_KEY` | Optional. Free [NASA FIRMS key](https://firms.modaps.eosdis.nasa.gov/api/map_key/) for the satellite cross-check |
+| `NOTEHUB_INGEST_TOKEN` | Optional and legacy. Use a dashboard ingest key instead |
 
-# Authentication
-JWT_SECRET=replace_this_with_a_long_random_secret
-
-# Logging
-SHOW_SQL=false
-
-# Server
-PORT=3001
-```
-
-:::warning Do not commit real secrets
-The `.env` file in this repository contains placeholder values. Before deploying, replace `DB_PASSWORD` and `JWT_SECRET` with strong, unique values and ensure `.env` is in your `.gitignore`.
+:::warning Never commit `.env`
+`.env` is git-ignored. Keep it that way.
 :::
 
-| Variable | Description | Default |
-|---|---|---|
-| `DB_NAME` | MySQL database name | `firethingys` |
-| `DB_USER` | MySQL username | `root` |
-| `DB_PASSWORD` | MySQL password | *(set this)* |
-| `DB_HOST` | MySQL host | `localhost` |
-| `DB_PORT` | MySQL port | `3306` |
-| `JWT_SECRET` | Secret used to sign JWT tokens | *(set this)* |
-| `SHOW_SQL` | Log raw SQL queries to console | `false` |
-| `PORT` | Port the Express server listens on | `3001` |
-
-## 4. Set Up the Database
-
-Create the MySQL database if it doesn't already exist:
-
-```sql
-CREATE DATABASE firethingys CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-The server uses Sequelize ORM with `sync` to create tables on startup. On first run, the schema will be applied automatically. You do not need to run migrations manually for a fresh install.
-
-## 5. Start the Server
+## 3. Start
 
 ```bash
-node server.js
+docker compose up -d --build
 ```
 
-Or, if you have `nodemon` installed for development (auto-reloads on file changes):
+| What | Where |
+|---|---|
+| Dashboard | http://localhost |
+| API | http://localhost:3000 |
+| Interactive API docs (Swagger) | http://localhost:3000/api-docs |
+
+The API creates its tables on first start.
+
+## 4. Create an account
+
+Open the dashboard and register. New accounts are ordinary users. To make the first admin, run this once:
 
 ```bash
-npx nodemon server.js
+docker compose exec -T db sh -c 'mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" biobot -e "update Users set role=\"admin\" where username=\"YOUR_NAME\""'
 ```
 
-You should see output similar to:
+After that, admins can promote others from the **Users** page.
 
-```
-Database connection established.
-Server running on port 3001
-```
+## 5. Simulate a node
 
-## 6. Verify It's Running
+In the dashboard, go to **API Keys**, create a key with scope **Notehub ingest**, and copy it. Then:
 
 ```bash
-curl http://localhost:3001/
+INGEST_TOKEN=<your ingest key> python3 biobot-cloud/scripts/notehub-sim.py --device biobot-010 --name "Test Ridge"
 ```
 
-The API should respond. You're ready to start making requests.
+The simulator sends Notehub-shaped `device.qo`, `data.qo` and `alert.qo` events: the node registers, reports readings, raises an alert, escalates and clears. Add `--leave-open` to keep the incident open.
 
-## Next Steps
+An admin can also start a scripted **demo fire** from the Live Map page. It runs five demo nodes for about 40 seconds and sends no emails.
 
-- Read the [API Reference](./api-reference) to understand available endpoints
-- Deploy to production using the [Deployment Guide](./deployment)
+## Working on the API without Docker
+
+```bash
+cd biobot-cloud
+npm ci
+DB_DIALECT=sqlite DB_PASSWORD=x JWT_SECRET=dev npm run dev
+npm test        # in-memory SQLite, no database or mail server needed
+```
+
+SQLite is a development convenience only. Production runs on MariaDB.
+
+## Next steps
+
+- [API Reference](./api-reference)
+- [Deployment](./deployment)
